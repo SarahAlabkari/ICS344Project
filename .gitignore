@@ -172,3 +172,29 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
+
+# VirtualBox / Vagrant
+.vagrant/
+*.box
+*.ova
+
+# Optional VM snapshots
+*.vdi
+*.vmdk
+*.log
+
+# Backup / dump files
+*.zip
+*.tar.gz
+*.7z
+
+# Optional: ignore all logs except the ones you want to track manually
+*.log
+
+# If you accidentally run `wget` or download packages/scripts
+*.exe
+*.sh.bak
+
+# Optional: Uncomment this to ignore screenshots if you haven’t cleaned them
+# *.png
+# *.jpg
