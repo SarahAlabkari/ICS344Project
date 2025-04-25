@@ -9,3 +9,7 @@ Apply a security defense to mitigate the exploited vulnerability and validate th
   ```bash
   sudo systemctl stop vsftpd
   sudo systemctl disable vsftpd
+
+Metasploitable Machine:
+The NAT AP Address: 10.0.2.15
+THe Host-Only Adapter IP: 172.28.128.3
