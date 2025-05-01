@@ -6,8 +6,8 @@
 
 | Name       | ID        | Role                         |
 | ---------- | --------- | ---------------------------- |
-| Teammate A | 202182830 | Attacker (Phase 1 & Phase 2) |
-| Teammate B | 202161910 | SIEM & Defense (Phase 2 & 3) |
+| Rana Elborma | 202182830 | Attacker (Phase 1 & Phase 2) |
+| Sarah Alabkari | 202161910 | SIEM & Defense (Phase 2 & 3) |
 
 ## Project Structure
 
