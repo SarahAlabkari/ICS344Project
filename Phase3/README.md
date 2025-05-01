@@ -78,13 +78,13 @@ sudo fail2ban-client status sshd
 
 Ping from Kali to Metasploitable3 to confirm network reachability.
 
-[](image.png)
+[![Screenshot of results]](image.png)
 
 ### 2. Before the Attack – SSH Jail Status
 
 Verified Fail2Ban is active for SSH and no IPs are banned yet.
 
-[](image-1.png)
+[![Screenshot of results]](image-1.png)
 
 ### 3. Simulating a Brute-Force Attack
 
@@ -92,13 +92,13 @@ Verified Fail2Ban is active for SSH and no IPs are banned yet.
 - Failed intentionally three times.
 - SSH session was forcefully closed, indicating Fail2Ban triggered the ban.
 
-[](image-2.png)
+[![Screenshot of results]](image-2.png)
 
 ### 4. After the Attack – SSH Jail Status
 
 Confirmed that the attacker’s IP was automatically banned by Fail2Ban.
 
-[](image-3.png)
+[![Screenshot of results]](image-3.png)
 
 ## Conclusion
 
