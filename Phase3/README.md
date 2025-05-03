@@ -85,7 +85,7 @@ sudo tail -n 15 /var/log/auth.log
 ```
 
 ** Screenshot – Auth log with failures:**
-![alt text](image-3.png)
+![](image-3.png)
 
 
 ##  Environment Setup
