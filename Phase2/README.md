@@ -62,7 +62,7 @@ source="auth.log" host="kali" sourcetype="RanaANDSarah" ("Accepted password" OR 
 - Failed: 42 attempts
 
 **Screenshot:**
-[![Screenshot of results]](image.png)
+![Screenshot of results](image.png)
 
 ### 2. Search for Successful Logins Only
 
@@ -73,7 +73,7 @@ source="auth.log" host="kali" sourcetype="RanaANDSarah" "Accepted password"
 ```
 
 **Screenshot:**
-[![Screenshot of results]](image-1.png)
+![Screenshot of results](image-1.png)
 
 ### 3. Search for Failed Logins Only
 
@@ -84,7 +84,7 @@ source="auth.log" host="kali" sourcetype="RanaANDSarah" "Failed password"
 ```
 
 **Screenshot:**
-[![Screenshot of results]](image-2.png)
+![Screenshot of results](image-2.png)
 
 ## Conclusion
 

