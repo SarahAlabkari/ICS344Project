@@ -1,92 +1,115 @@
 # Phase #3 – Defensive Strategy Implementation with Fail2Ban
 
-## Objective
+##  Objective
 
-Defend against SSH brute-force login attacks on Metasploitable3 by configuring and validating a Fail2Ban setup that automatically bans IP addresses after multiple failed login attempts.
+Defend against SSH brute-force login attacks on Metasploitable3 by configuring Fail2Ban to automatically ban IP addresses after repeated failed login attempts.
 
-## Defense Tool Used: Fail2Ban
 
-**Monitored Log File:** `/var/log/auth.log`
-**Attacker Machine:** Kali Linux
-**Victim Machine:** Metasploitable3
 
-## Steps Taken to Apply and Test the Defense
+##  Defense Tool Used: Fail2Ban
 
-### 1. Configure Fail2Ban on Metasploitable3
+* **Monitored Log File:** `/var/log/auth.log`
+* **Attacker Machine:** Kali Linux
+* **Victim Machine:** Metasploitable3
 
-- Opened the Fail2Ban jail configuration file:
 
-  ```bash
-  sudo nano /etc/fail2ban/jail.local
-  ```
 
-- Added the following configuration:
+##  Steps Taken to Apply and Test the Defense
 
-  ```ini
-  [sshd]
-  enabled = true
-  port = ssh
-  filter = sshd
-  logpath = /var/log/auth.log
-  maxretry = 3
-  bantime = 600
-  ```
+### 1. Configure Fail2Ban on the Victim (Metasploitable3)
 
-- Restarted the Fail2Ban service:
+* Opened the jail configuration file:
 
-  ```bash
-  sudo service fail2ban restart
-  ```
+```bash
+sudo nano /etc/fail2ban/jail.local
+```
 
-**Screenshot:**
-[![Screenshot of results]](image-6.png)
+* Added the following config under `[sshd]`:
 
-### 2. Trigger the Attack from Kali Linux
+```ini
+[sshd]
+enabled = true
+port = ssh
+filter = sshd
+logpath = /var/log/auth.log
+maxretry = 3
+bantime = 600
+action = iptables[name=SSH, port=ssh, protocol=tcp]
+```
 
-- Launched an SSH brute-force simulation using repeated incorrect passwords:
+* Restarted Fail2Ban:
 
-  ```bash
-  ssh msfadmin@192.168.56.103
-  ```
+```bash
+sudo service fail2ban restart
+```
 
-- Repeated login attempts until the server blocked access:
+** Screenshot – jail.local configuration:**
+![](image.png)
 
-  ```
-  Permission denied
-  ...
-  ssh: connect to host 192.168.56.103 port 22: Connection refused
-  ```
 
-**Screenshot:**
-[![Screenshot of results]](image-5.png)
 
-### 3. Confirm the Attack Was Blocked
+### 2. Trigger Brute-Force Attack from Kali Linux
 
-- Checked Fail2Ban status:
+* Launched repeated SSH login attempts:
 
-  ```bash
-  sudo fail2ban-client status sshd
-  ```
+```bash
+ssh msfadmin@192.168.56.103
+```
 
-- Verified failed login entries in the auth log:
+* Repeated incorrect logins until the server refused further connections:
 
-  ```bash
-  sudo tail -n 15 /var/log/auth.log
-  ```
+```
+Permission denied
+Connection refused
+```
 
-**Screenshot:**
-[![Screenshot of results]](image-7.png)
+** Screenshot – SSH brute-force blocked:**
+![](image-1.png)
 
-## Environment Setup
+
+### 3. Verify that the Attack Was Blocked
+
+* Checked Fail2Ban status to confirm the ban:
+
+```bash
+sudo fail2ban-client status sshd
+```
+
+** Screenshot – Banned IP listed:**
+![](image-2.png)
+
+* Viewed auth log for failed login attempts:
+
+```bash
+sudo tail -n 15 /var/log/auth.log
+```
+
+** Screenshot – Auth log with failures:**
+![alt text](image-3.png)
+
+
+##  Environment Setup
 
 **Metasploitable3 (Victim)**
-Host-Only IP: 192.168.56.103
-User: vagrant
+
+* IP: `192.168.56.103`
+* Username: `vagrant`
 
 **Kali Linux (Attacker)**
-Host-Only IP: 192.168.56.104
-User: kali
 
-## Conclusion
+* IP: `192.168.56.104`
+* Username: `kali`
 
-Fail2Ban successfully detected and blocked the brute-force SSH attack from the Kali machine. It did so by monitoring `/var/log/auth.log`, identifying repeated failed login attempts, and banning the attacker IP after 3 retries. The defense was confirmed by both system logs and blocked SSH access.
+
+
+##  Conclusion
+
+Fail2Ban successfully mitigated an SSH brute-force attack by:
+
+* Monitoring `/var/log/auth.log`
+* Detecting multiple failed login attempts (threshold: 3)
+* Banning the attacker's IP using `iptables`
+
+The block was confirmed via `fail2ban-client` output, `auth.log` entries, and SSH connection refusal on the attacker side.
+
+This demonstrates an effective host-based defense that requires minimal overhead and protects exposed SSH services.
