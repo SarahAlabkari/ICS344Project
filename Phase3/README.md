@@ -46,6 +46,9 @@ sudo service fail2ban restart
 ** Screenshot – jail.local configuration:**
 ![](image.png)
 
+* The Fail2ban status before the attack
+![](image-1.png)
+
 
 
 ### 2. Trigger Brute-Force Attack from Kali Linux
@@ -64,7 +67,7 @@ Connection refused
 ```
 
 ** Screenshot – SSH brute-force blocked:**
-![](image-1.png)
+![](image-2.png)
 
 
 ### 3. Verify that the Attack Was Blocked
@@ -76,7 +79,7 @@ sudo fail2ban-client status sshd
 ```
 
 ** Screenshot – Banned IP listed:**
-![](image-2.png)
+![](image-3.png)
 
 * Viewed auth log for failed login attempts:
 
@@ -85,7 +88,7 @@ sudo tail -n 15 /var/log/auth.log
 ```
 
 ** Screenshot – Auth log with failures:**
-![](image-3.png)
+![](image-4.png)
 
 
 ##  Environment Setup
